@@ -1,0 +1,31 @@
+{
+  "name": "code-ant",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "dev": "vite --port=3000",
+    "build": "vite build",
+    "serve": "vite preview",
+    "start": "vite",
+    "docs": "typedoc"
+  },
+  "devDependencies": {
+    "@tanstack/router-plugin": "^1.91.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "prettier": "^3.4.2",
+    "typedoc": "^0.27.5",
+    "vite": "^6.0.3"
+  },
+  "dependencies": {
+    "@chakra-ui/react": "2.x",
+    "@tanstack/react-router": "^1.91.3",
+    "@tanstack/router-devtools": "^1.91.3",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "packageManager": "pnpm@9.14.4+sha512.c8180b3fbe4e4bca02c94234717896b5529740a6cbadf19fa78254270403ea2f27d4e1d46a08a0f56c89b63dc8ebfd3ee53326da720273794e6200fcf0d184ab"
+}

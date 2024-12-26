@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as PrivateRouteImport } from './routes/_private/route'
 import { Route as AuthRouteImport } from './routes/_auth/route'
+import { Route as IndexImport } from './routes/index'
 import { Route as PrivateHomeImport } from './routes/_private/home'
 import { Route as AuthLoginImport } from './routes/_auth/login'
 import { Route as publicPrivacyPolicyImport } from './routes/(public)/privacy-policy'
@@ -26,6 +27,12 @@ const PrivateRouteRoute = PrivateRouteImport.update({
 
 const AuthRouteRoute = AuthRouteImport.update({
   id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const IndexRoute = IndexImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -51,6 +58,13 @@ const publicPrivacyPolicyRoute = publicPrivacyPolicyImport.update({
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
     '/_auth': {
       id: '/_auth'
       path: ''
@@ -116,6 +130,7 @@ const PrivateRouteRouteWithChildren = PrivateRouteRoute._addFileChildren(
 )
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '': typeof PrivateRouteRouteWithChildren
   '/privacy-policy': typeof publicPrivacyPolicyRoute
   '/login': typeof AuthLoginRoute
@@ -123,6 +138,7 @@ export interface FileRoutesByFullPath {
 }
 
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '': typeof PrivateRouteRouteWithChildren
   '/privacy-policy': typeof publicPrivacyPolicyRoute
   '/login': typeof AuthLoginRoute
@@ -131,6 +147,7 @@ export interface FileRoutesByTo {
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
+  '/': typeof IndexRoute
   '/_auth': typeof AuthRouteRouteWithChildren
   '/_private': typeof PrivateRouteRouteWithChildren
   '/(public)/privacy-policy': typeof publicPrivacyPolicyRoute
@@ -140,11 +157,12 @@ export interface FileRoutesById {
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '' | '/privacy-policy' | '/login' | '/home'
+  fullPaths: '/' | '' | '/privacy-policy' | '/login' | '/home'
   fileRoutesByTo: FileRoutesByTo
-  to: '' | '/privacy-policy' | '/login' | '/home'
+  to: '/' | '' | '/privacy-policy' | '/login' | '/home'
   id:
     | '__root__'
+    | '/'
     | '/_auth'
     | '/_private'
     | '/(public)/privacy-policy'
@@ -154,12 +172,14 @@ export interface FileRouteTypes {
 }
 
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   AuthRouteRoute: typeof AuthRouteRouteWithChildren
   PrivateRouteRoute: typeof PrivateRouteRouteWithChildren
   publicPrivacyPolicyRoute: typeof publicPrivacyPolicyRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthRouteRoute: AuthRouteRouteWithChildren,
   PrivateRouteRoute: PrivateRouteRouteWithChildren,
   publicPrivacyPolicyRoute: publicPrivacyPolicyRoute,
@@ -175,10 +195,14 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/_auth",
         "/_private",
         "/(public)/privacy-policy"
       ]
+    },
+    "/": {
+      "filePath": "index.tsx"
     },
     "/_auth": {
       "filePath": "_auth/route.tsx",
